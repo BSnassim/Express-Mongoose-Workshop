@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chat</title>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <label for="">msg:</label
+    ><input type="text" name="" id="ch" onkeyup="typing()" />
+    <button type="submit" onclick="send()">Send</button>
+    <div id="typingIndicator"></div>
+    <script>
+      const socket = io.connect();
+      u = prompt("Enter your name");
+      socket.on("msg", (message) => {
+        p = document.createElement("p");
+        console.log(message);
+        p.innerText = message;
+        document.body.append(p);
+      });
+      socket.on("typing", (message) => {
+        document.getElementById("typingIndicator").innerText = message;
+      });
+      function send() {
+        console.log(document.getElementById("ch").value);
+        socket.emit("msg", document.getElementById("ch").value);
+        document.getElementById("ch").value = "";
+      }
+      function typing() {
+        socket.emit("typing", u + " is typing...");
+      }
+    </script>
+  </body>
+</html>
